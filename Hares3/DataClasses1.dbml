@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BDComercioTtecnologico" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.TUsuarios" Member="Usuarios">
+    <Type Name="Usuarios">
+      <Column Name="CodUsuario" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Contrasena" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CodTipoUsuario" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Association Name="TUsuarios_TClientes" Member="Clientes" ThisKey="CodUsuario" OtherKey="CodUsuario" Type="Clientes" />
+      <Association Name="TTipoUsuario_TUsuarios" Member="TipoUsuario" ThisKey="CodTipoUsuario" OtherKey="CodTipoUsuario" Type="TipoUsuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TTipoUsuario" Member="TipoUsuario">
+    <Type Name="TipoUsuario">
+      <Column Name="CodTipoUsuario" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tipo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="TTipoUsuario_TUsuarios" Member="Usuarios" ThisKey="CodTipoUsuario" OtherKey="CodTipoUsuario" Type="Usuarios" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TProveedores" Member="Proveedores">
+    <Type Name="Proveedores">
+      <Column Name="CodProveedor" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="TProveedores_TProductos" Member="Productos" ThisKey="CodProveedor" OtherKey="CodProveedor" Type="Productos" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TProductos" Member="Productos">
+    <Type Name="Productos">
+      <Column Name="CodProducto" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Precio" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CodCategoria" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CodProveedor" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Association Name="TProductos_TInventario" Member="Inventario" ThisKey="CodProducto" OtherKey="CodProducto" Type="Inventario" />
+      <Association Name="TProductos_TDetallesPedido" Member="DetallesPedido" ThisKey="CodProducto" OtherKey="CodProducto" Type="DetallesPedido" />
+      <Association Name="TProveedores_TProductos" Member="Proveedores" ThisKey="CodProveedor" OtherKey="CodProveedor" Type="Proveedores" IsForeignKey="true" />
+      <Association Name="TCategorias_TProductos" Member="Categorias" ThisKey="CodCategoria" OtherKey="CodCategoria" Type="Categorias" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TPedidos" Member="Pedidos">
+    <Type Name="Pedidos">
+      <Column Name="CodPedido" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCliente" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaPedido" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Total" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="TPedidos_TDetallesPedido" Member="DetallesPedido" ThisKey="CodPedido" OtherKey="CodPedido" Type="DetallesPedido" />
+      <Association Name="TClientes_TPedidos" Member="Clientes" ThisKey="CodCliente" OtherKey="CodCliente" Type="Clientes" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TInventario" Member="Inventario">
+    <Type Name="Inventario">
+      <Column Name="CodInventario" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodProducto" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CantidadDisponible" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TProductos_TInventario" Member="Productos" ThisKey="CodProducto" OtherKey="CodProducto" Type="Productos" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TDetallesPedido" Member="DetallesPedido">
+    <Type Name="DetallesPedido">
+      <Column Name="CodDetallePedido" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPedido" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CodProducto" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="Cantidad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PrecioUnitario" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CodDescuento" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Association Name="TPedidos_TDetallesPedido" Member="Pedidos" ThisKey="CodPedido" OtherKey="CodPedido" Type="Pedidos" IsForeignKey="true" />
+      <Association Name="TProductos_TDetallesPedido" Member="Productos" ThisKey="CodProducto" OtherKey="CodProducto" Type="Productos" IsForeignKey="true" />
+      <Association Name="TDescuentos_TDetallesPedido" Member="Descuentos" ThisKey="CodDescuento" OtherKey="CodDescuento" Type="Descuentos" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TDescuentos" Member="Descuentos">
+    <Type Name="Descuentos">
+      <Column Name="CodDescuento" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Porcentaje" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
+      <Association Name="TDescuentos_TDetallesPedido" Member="DetallesPedido" ThisKey="CodDescuento" OtherKey="CodDescuento" Type="DetallesPedido" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TClientes" Member="Clientes">
+    <Type Name="Clientes">
+      <Column Name="CodCliente" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="APaterno" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AMaterno" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CodUsuario" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="TClientes_TPedidos" Member="Pedidos" ThisKey="CodCliente" OtherKey="CodCliente" Type="Pedidos" />
+      <Association Name="TUsuarios_TClientes" Member="Usuarios" ThisKey="CodUsuario" OtherKey="CodUsuario" Type="Usuarios" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TCategorias" Member="Categorias">
+    <Type Name="Categorias">
+      <Column Name="CodCategoria" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="TCategorias_TProductos" Member="Productos" ThisKey="CodCategoria" OtherKey="CodCategoria" Type="Productos" />
+    </Type>
+  </Table>
+</Database>
